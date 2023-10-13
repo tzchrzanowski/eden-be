@@ -10,23 +10,44 @@ import java.util.List;
 public class EdenBeApplication {
 
     public static void main(String[] args) {
-        System.out.println("started..");
+        System.out.println("Eden backend server is running..");
 
+        /*
+        * Setting up context for Spring:
+        * */
         ApplicationContext context = SpringApplication.run(EdenBeApplication.class, args);
 
-        // Autowire the UserService
+        /*
+        * Autowire the UserService
+        * */
         UserService userService = context.getBean(UserService.class);
 
-        // Retrieve all users from the database
+        /*
+        * Retrieve all users from the database
+        * */
         List<User> users = userService.getAllUsers();
 
-        // Print user information to the console
+        /*
+        * Create new user:
+        * */
+//        User bartek = new User(2L, "Brt D", "bartek@bartek.com", "placePassword", "Bartek", "Dobraniecki", "https://...", 1, 1);
+//        userService.createUser(bartek);
+
+        /*
+        * Print user information to the console
+        * */
         for (User user : users) {
-            System.out.println("User ID: " + user.getId());
+            if(userService.isPasswordValid("placePassword",user.getPassword())) {
+                System.out.println("provided password is correct!");
+            } else {
+                System.out.println("Incorrect password.");
+            }
             System.out.println("Username: " + user.getUsername());
             System.out.println("Email: " + user.getEmail());
             System.out.println();
         }
+
+
     }
 
 }

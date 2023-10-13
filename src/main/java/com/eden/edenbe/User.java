@@ -10,16 +10,108 @@ public class User {
     private Long id;
     private String username;
     private String email;
+    private String password;
+    private String first_name;
+    private String last_name;
+    private String profile_picture_url;
+    private String creation_date;
+    private String last_login_date;
+    private int active;
+    private int role_id;
 
+    public User() {
+    }
+    /*
+    * Constructor of new user
+    * */
+    public User(
+        Long id,
+        String username,
+        String email,
+        String password,
+        String first_name,
+        String last_name,
+        String profile_picture_url,
+        int active,
+        int role_id
+    ) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.profile_picture_url = profile_picture_url;
+        this.active = active;
+        this.role_id = role_id;
+    }
+
+    /*
+    * Getters
+    * */
+    public String getFirst_name() {
+        return this.first_name;
+    }
+    public String getLast_name() {
+        return this.last_name;
+    }
+    public String getProfile_picture_url() {
+        return this.profile_picture_url;
+    }
+    public String getCreation_date() {
+        return this.creation_date;
+    }
+    public String getLast_login_date() {
+        return this.last_login_date;
+    }
+    public int getRole_id() {
+        return this.role_id;
+    }
+    public int getIsAccountActive() {
+        return this.active;
+    }
     public Long getId() {
         return this.id;
     }
-
     public String getUsername() {
         return this.username;
     }
-
-    public String getEmail() {
-        return this.email;
+    public String getEmail() { return this.email; }
+    public String getPassword() { return this.password; }
+    /*
+    * Setters:
+    * */
+    public void setPassword(String pwd) {
+        this.password = pwd;
+    }
+    public void setFirst_name(String name) {
+        this.first_name = name;
+    }
+    public void setLast_name(String lastName) {
+        this.last_name = lastName;
+    }
+    public void setProfile_picture_url(String newUrl) {
+        this.profile_picture_url = newUrl;
+    }
+    public void setCreation_date(String newDate) {
+        this.creation_date = newDate;
+    }
+    public void setLast_login_date(String newDate) {
+        this.last_login_date = newDate;
+    }
+    public void setActive(int newActiveState) {
+        this.active = newActiveState;
+    }
+    public void setRole_id(int newRoleId) {
+        this.role_id = newRoleId;
+    }
+    public void setId(Long newId) {
+        this.id = newId;
+    }
+    public void setUsername(String newUsername) {
+        this.username = newUsername;
+    }
+    public void setEmail(String newEmail) {
+        this.email = newEmail;
     }
 }
