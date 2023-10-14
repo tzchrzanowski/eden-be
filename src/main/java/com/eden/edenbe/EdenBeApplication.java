@@ -1,12 +1,15 @@
 package com.eden.edenbe;
 
+import com.eden.edenbe.config.CorsConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.eden.edenbe")
+@Import(CorsConfig.class) // includes CorsConfig class in spring boot app run
 public class EdenBeApplication {
 
     public static void main(String[] args) {
