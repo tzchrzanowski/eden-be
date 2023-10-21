@@ -3,6 +3,8 @@ package com.eden.edenbe.config;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.Claims;
+import org.springframework.context.annotation.Bean;
+
 import java.util.Date;
 
 public class JwtUtils {
@@ -10,6 +12,7 @@ public class JwtUtils {
     private static final String SECRET_KEY = "temp-key0101";
     private static final long EXPIRATION_TIME = 864_000_000; // 10 days
 
+    @Bean
     public static String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
@@ -19,6 +22,7 @@ public class JwtUtils {
                 .compact();
     }
 
+    @Bean
     public static Claims parseToken(String token) {
         return Jwts.parser()
                 .setSigningKey(SECRET_KEY)
