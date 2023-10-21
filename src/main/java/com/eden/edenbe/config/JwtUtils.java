@@ -1,32 +1,40 @@
 package com.eden.edenbe.config;
-
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.Claims;
-import org.springframework.context.annotation.Bean;
+import com.nimbusds.jose.JWSHeader;
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.crypto.MACSigner;
 
 import java.util.Date;
+import java.util.Calendar;
 
 public class JwtUtils {
     // TODO replace with strong key
-    private static final String SECRET_KEY = "temp-key0101";
-    private static final long EXPIRATION_TIME = 864_000_000; // 10 days
+    private static final String SECRET_KEY = "v$E*j1OaccyWU*Gdc4oC^7O5ZiESKdvmuFbGd!nhqrnB4ukFmw$iW6$!xT5YsNw@";
 
-    @Bean
-    public static String generateToken(String username) {
-        return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-                .compact();
-    }
+//    @Bean
+//    public static Claims parseToken(String token) {
+//        return Jwts.parser()
+//                .setSigningKey(SECRET_KEY)
+//                .getClass().get
+//    }
 
-    @Bean
-    public static Claims parseToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token)
-                .getBody();
+    public static String generateToken(String username) throws JOSEException {
+        Calendar expirationTime = Calendar.getInstance();
+        expirationTime.add(Calendar.MINUTE, 720);
+
+        // Create a new JWT Claims Set
+        JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
+                .subject(username)
+                .expirationTime(expirationTime.getTime())
+                .build();
+
+        // Sign the JWT with the HMAC SHA-256 algorithm
+        SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
+        signedJWT.sign(new MACSigner(SECRET_KEY));
+
+        // Serialize to a compact format
+        return signedJWT.serialize();
     }
 }
