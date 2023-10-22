@@ -37,6 +37,7 @@ public class LoginController {
                 String token = generateToken(credentials.get("username"));
                 Map<String, String> response = new HashMap<>();
                 response.put("token", token);
+                response.put("status", "200");
                 return ResponseEntity.ok(response);
             }
         } catch (JOSEException ex) {
@@ -44,6 +45,7 @@ public class LoginController {
         }
         Map<String, String> errorResponse = new HashMap<>();
         errorResponse.put("error", "Invalid credentials");
+        errorResponse.put("status", "401");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     };
 }
