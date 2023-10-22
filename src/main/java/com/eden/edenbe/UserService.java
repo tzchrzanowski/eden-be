@@ -7,7 +7,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class UserService {
-
     /*
     * User repository from spring that automatically connects to DB
     * */

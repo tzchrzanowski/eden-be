@@ -9,8 +9,6 @@ import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
-import static com.eden.edenbe.config.JwtUtils.generateToken;
-
 @SpringBootApplication(scanBasePackages = "com.eden.edenbe")
 @Import(CorsConfig.class) // includes CorsConfig class in spring boot app run
 public class EdenBeApplication {

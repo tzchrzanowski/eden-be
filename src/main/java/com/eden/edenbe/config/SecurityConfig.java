@@ -25,16 +25,8 @@ public class SecurityConfig {
 
     /*
     * JWT related configuration:
-    */
-
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.cors();
-//    }
-    /*
-    * turn off certificate checkup:
+    * includes turn off, of certificate checkup:
     * */
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
