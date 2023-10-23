@@ -31,13 +31,13 @@ public class LoginController {
     public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> credentials) {
         try {
             boolean isUserValidx = auth.isUserValid(credentials.get("username"), credentials.get("password"));
-            System.out.println("Is user valid using auth: " + isUserValidx);
-
             if (isUserValidx) {
                 String token = generateToken(credentials.get("username"));
                 Map<String, String> response = new HashMap<>();
+                String userType = auth.getUserType(credentials.get("username"));
                 response.put("token", token);
                 response.put("status", "200");
+                response.put("role_id", userType);
                 return ResponseEntity.ok(response);
             }
         } catch (JOSEException ex) {

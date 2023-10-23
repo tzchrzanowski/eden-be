@@ -1,8 +1,6 @@
 package com.eden.edenbe.restControllers;
 import com.eden.edenbe.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
@@ -13,13 +11,6 @@ import java.sql.SQLException;
 
 @Component
 public class Authentication {
-//    @Value("${spring.datasource.url}")
-//    private String dbUrl;
-//    @Value("${spring.datasource.username}")
-//    private String dbUsername;
-//    @Value("${spring.datasource.password}")
-//    private String dbPassword;
-
     private String dbUrl = "jdbc:mysql://localhost:3306/eden_db";
     private String dbUsername = "root";
     private String dbPassword = "12Bomb21!@";
@@ -62,5 +53,31 @@ public class Authentication {
             return false;
         }
         return false; // default return statement;
+    }
+
+    public String getUserType(String username) {
+        try {
+            Connection connection = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
+            String query = "SELECT role_id FROM users WHERE username = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, username);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                int userType = resultSet.getInt("role_id");
+                resultSet.close();
+                statement.close();
+                connection.close();
+                return "" + userType;
+            }
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return "0";
     }
 }
