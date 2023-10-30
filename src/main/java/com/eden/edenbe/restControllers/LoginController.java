@@ -1,5 +1,7 @@
 package com.eden.edenbe.restControllers;
 
+import com.eden.edenbe.User;
+import com.eden.edenbe.UserService;
 import com.nimbusds.jose.JOSEException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.http.HttpStatus;
 import static com.eden.edenbe.config.JwtUtils.generateToken;
 
@@ -24,6 +28,9 @@ public class LoginController {
         this.auth = authentication;
     }
 
+    @Autowired
+    private UserService userService;
+
     /*
     * Authenticate the user based on the provided credentials (e.g., username and password).
     * If authentication is successful, generate a JWT token and return it.
@@ -35,11 +42,15 @@ public class LoginController {
             boolean isUserValidx = auth.isUserValid(credentials.get("username"), credentials.get("password"));
             if (isUserValidx) {
                 String token = generateToken(credentials.get("username"));
+                Optional<User> user = userService.getUserByUsername(credentials.get("username"));
+
                 Map<String, String> response = new HashMap<>();
                 String userType = auth.getUserType(credentials.get("username"));
+                String currentUserId = user.get().getId().toString();
                 response.put("token", token);
                 response.put("status", "200");
                 response.put("role_id", userType);
+                response.put("user_id", currentUserId);
                 return ResponseEntity.ok(response);
             }
         } catch (JOSEException ex) {

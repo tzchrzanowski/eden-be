@@ -3,6 +3,8 @@ package com.eden.edenbe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
@@ -36,6 +38,28 @@ public class UserService {
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
         return userRepository.save(user);
+    }
+
+    /*
+    * Get user by id:
+    * */
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId).orElse(null);
+    }
+
+    /*
+     * Get user by username:
+     */
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    /*
+    * Update user profile:
+    * */
+    public void updateUserProfile(User user) {
+        // TODO: extend user profile logic here.
+        userRepository.save(user);
     }
 
     /*
