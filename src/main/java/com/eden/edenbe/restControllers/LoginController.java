@@ -47,10 +47,12 @@ public class LoginController {
                 Map<String, String> response = new HashMap<>();
                 String userType = auth.getUserType(credentials.get("username"));
                 String currentUserId = user.get().getId().toString();
+                String currentUserPhoto = user.get().getProfile_picture_url();
                 response.put("token", token);
                 response.put("status", "200");
                 response.put("role_id", userType);
                 response.put("user_id", currentUserId);
+                response.put("user_photo", currentUserPhoto);
                 return ResponseEntity.ok(response);
             }
         } catch (JOSEException ex) {
