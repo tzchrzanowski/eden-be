@@ -1,8 +1,10 @@
 package com.eden.edenbe.restControllers;
 
 import com.nimbusds.jose.JOSEException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
@@ -47,5 +49,21 @@ public class LoginController {
         errorResponse.put("error", "Invalid credentials");
         errorResponse.put("status", "401");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    };
+
+    /*
+    * Logout user
+    * */
+    @PostMapping(value = "/logout", produces = "application/json")
+    public ResponseEntity<Map<String, String>> logout(HttpServletRequest request) {
+        SecurityContextHolder.clearContext();
+        String token = "";
+        Map<String, String> response = new HashMap<>();
+        String userType = "0";
+        response.put("token", token);
+        response.put("role_id", userType);
+        response.put("status", "200");
+        response.put("message", "Logged out successfully");
+        return ResponseEntity.ok(response);
     };
 }
