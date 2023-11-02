@@ -41,4 +41,25 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     };
+
+//    @GetMapping("/{userId}/get-network")
+//    public ResponseEntity<List<User>> getUserNetworkList(
+//            @PathVariable Long userId
+//    ) {
+//        List<User> usersList = new List<User>();
+//
+//        User user = userService.getUserById(userId);
+//        if (user != null) {
+//            return ResponseEntity.ok(user);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    };
+
+    @GetMapping("/{parent}/get-network")
+    public List<User> getUsersByParentEndpoint(
+            @PathVariable int parent
+    ) {
+        return userService.getUsersByParent(parent);
+    }
 }

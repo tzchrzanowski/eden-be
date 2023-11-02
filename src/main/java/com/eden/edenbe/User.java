@@ -16,6 +16,9 @@ public class User {
     private String profile_picture_url;
     private String creation_date;
     private String last_login_date;
+    private Integer parent;
+    private Long left_child;
+    private Long right_child;
     private int active;
     private int role_id;
 
@@ -33,7 +36,10 @@ public class User {
         String last_name,
         String profile_picture_url,
         int active,
-        int role_id
+        int role_id,
+        Long left_child,
+        Long right_child,
+        int parent
     ) {
         this.id = id;
         this.username = username;
@@ -44,6 +50,9 @@ public class User {
         this.profile_picture_url = profile_picture_url;
         this.active = active;
         this.role_id = role_id;
+        this.left_child = left_child;
+        this.right_child = right_child;
+        this.parent = parent;
     }
 
     /*
@@ -78,6 +87,10 @@ public class User {
     }
     public String getEmail() { return this.email; }
     public String getPassword() { return this.password; }
+    public int getParent() { return this.parent; }
+    public Long getLeft_child() {return this.left_child; }
+    public Long getRight_child() {return this.right_child;}
+
     /*
     * Setters:
     * */
@@ -114,4 +127,7 @@ public class User {
     public void setEmail(String newEmail) {
         this.email = newEmail;
     }
+    public void setParent(int newParent) { this.parent = newParent;}
+    public void setLeft_child(Long newLeftChildId) {this.left_child = newLeftChildId; }
+    public void setRight_child(Long newRightChildId) {this.right_child = newRightChildId; }
 }

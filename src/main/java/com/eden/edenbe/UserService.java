@@ -55,6 +55,13 @@ public class UserService {
     }
 
     /*
+    * Get users by parent ID:
+    * */
+    public List<User> getUsersByParent(int parent) {
+        return userRepository.findByParent(parent);
+    }
+
+    /*
     * Update user profile:
     * */
     public void updateUserProfile(User user) {
