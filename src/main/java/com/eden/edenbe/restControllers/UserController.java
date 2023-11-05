@@ -1,11 +1,13 @@
 package com.eden.edenbe.restControllers;
 import com.eden.edenbe.User;
+import com.eden.edenbe.UserDTO;
 import com.eden.edenbe.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -57,9 +59,25 @@ public class UserController {
 //    };
 
     @GetMapping("/{parent}/get-network")
-    public List<User> getUsersByParentEndpoint(
+    public List<UserDTO> getUsersByParentEndpoint(
             @PathVariable int parent
     ) {
-        return userService.getUsersByParent(parent);
+        List<User> users = userService.getUsersByParent(parent);
+
+        List<UserDTO> userDTOs = users.stream()
+                .map(user -> {
+                    UserDTO userDTO = new UserDTO();
+                    userDTO.setId(user.getId());
+                    userDTO.setUsername(user.getUsername());
+                    userDTO.setEmail(user.getEmail());
+                    userDTO.setParent(user.getParent());
+                    userDTO.setFirst_name(user.getFirst_name());
+                    userDTO.setLast_name(user.getLast_name());
+                    userDTO.setLeft_child(user.getLeft_child());
+                    userDTO.setRight_child(user.getRight_child());
+                    return userDTO;
+                }).collect(Collectors.toList());
+        return userDTOs;
+//        return userService.getUsersByParent(parent);
     }
 }
