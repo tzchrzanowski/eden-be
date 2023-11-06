@@ -29,6 +29,15 @@ public class UserService {
     }
 
     /*
+    * returns total amount of users
+    * */
+    public int getTotalUsers() {
+        Long totalAmountAsLong = userRepository.count();
+        int totalUsersAsInt = totalAmountAsLong.intValue();
+        return totalUsersAsInt;
+    }
+
+    /*
     * Creating new user
     * */
     public User createUser(User user) {
