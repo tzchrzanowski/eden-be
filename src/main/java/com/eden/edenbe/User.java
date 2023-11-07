@@ -87,9 +87,29 @@ public class User {
     }
     public String getEmail() { return this.email; }
     public String getPassword() { return this.password; }
-    public int getParent() { return this.parent; }
-    public Long getLeft_child() {return this.left_child; }
-    public Long getRight_child() {return this.right_child;}
+    public int getParent() {
+        if (this.parent == null) {
+            return -1;
+        } else {
+            return this.parent;
+        }
+    }
+    public Long getLeft_child() {
+        if (this.left_child == null) {
+            Long minusOne = -1l;
+            return minusOne;
+        } else {
+            return this.left_child;
+        }
+    }
+    public Long getRight_child() {
+        if (this.right_child == null) {
+            Long minusOne = -1l;
+            return minusOne;
+        } else {
+            return this.right_child;
+        }
+    }
 
     /*
     * Setters:

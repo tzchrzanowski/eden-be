@@ -1,4 +1,5 @@
 package com.eden.edenbe.restControllers;
+import com.eden.edenbe.TreeNode;
 import com.eden.edenbe.User;
 import com.eden.edenbe.UserDTO;
 import com.eden.edenbe.UserService;
@@ -45,39 +46,33 @@ public class UserController {
         }
     };
 
+/*
+* Previous endpoint for /id/get-network
+* TODO: to be removed, works along with recursiveFetchUsers(), allows to return list of descendants of current user.
+* */
 //    @GetMapping("/{parent}/get-network")
 //    public List<UserDTO> getUsersByParentEndpoint(
 //            @PathVariable int parent
 //    ) {
-//        List<User> users = userService.getUsersByParent(parent);
+//        List<UserDTO> userDTOs = new ArrayList<>();
 //
-//        List<UserDTO> userDTOs = users.stream()
-//                .map(user -> {
-//                    UserDTO userDTO = new UserDTO();
-//                    userDTO.setId(user.getId());
-//                    userDTO.setUsername(user.getUsername());
-//                    userDTO.setEmail(user.getEmail());
-//                    userDTO.setParent(user.getParent());
-//                    userDTO.setFirst_name(user.getFirst_name());
-//                    userDTO.setLast_name(user.getLast_name());
-//                    userDTO.setLeft_child(user.getLeft_child());
-//                    userDTO.setRight_child(user.getRight_child());
-//                    return userDTO;
-//                }).collect(Collectors.toList());
+//        int totalUsers = userService.getTotalUsers();
+//        int maxDepth = calculateMaxDepth(totalUsers);
+//        recursiveFetchUsers(parent, userDTOs, 0, maxDepth);
 //        return userDTOs;
 //    }
 
     @GetMapping("/{parent}/get-network")
-    public List<UserDTO> getUsersByParentEndpoint(
+    public TreeNode getUsersByParentEndpoint(
             @PathVariable int parent
     ) {
-        List<UserDTO> userDTOs = new ArrayList<>();
-
-        int totalUsers = userService.getTotalUsers();
-        int maxDepth = calculateMaxDepth(totalUsers);
-        recursiveFetchUsers(parent, userDTOs, 0, maxDepth);
-        return userDTOs;
+        if(parent > 0) {
+            TreeNode userTree = buildUserTree(parent);
+            return userTree;
+        }
+        return new TreeNode();
     }
+
 
     /*
     * Calculate the max depth based on the number of users
@@ -89,13 +84,14 @@ public class UserController {
     }
 
     /*
+    * TODO: potentially to be removed. returns list of all children descendants of current node ( without current user ).
     * recursively goes through users to check if there are more users to be added as children.
+    * updates the referenced object userDTOs list, so it does not need to return it.
     * */
     private void recursiveFetchUsers(int parent, List<UserDTO> userDTOs, int depth, int maxDepth) {
         if (depth >= maxDepth) {
             return;
         }
-
         List<User> users = userService.getUsersByParent(parent);
 
         for (User user : users) {
@@ -115,5 +111,57 @@ public class UserController {
             // Recursively fetch child users, increasing depth
             recursiveFetchUsers(userIdAsInt, userDTOs, depth + 1, maxDepth);
         }
+    }
+
+    /*
+    * Recursively builds binary-tree structure based on given parent user id:
+    * */
+    private TreeNode buildUserTree(int parent) {
+        List<User> users = userService.getUsersByParent(parent);
+
+        Long userIdAsLong = Long.valueOf(parent);
+        User currentUser = userService.getUserById(userIdAsLong);
+
+        /*
+         * setting up the user object for response:
+         * */
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(currentUser.getId());
+        userDTO.setUsername(currentUser.getUsername());
+        userDTO.setEmail(currentUser.getEmail());
+        userDTO.setParent(currentUser.getParent());
+        userDTO.setFirst_name(currentUser.getFirst_name());
+        userDTO.setLast_name(currentUser.getLast_name());
+        userDTO.setLeft_child(currentUser.getLeft_child());
+        userDTO.setRight_child(currentUser.getRight_child());
+
+        /*
+        * Setting up the TreeNode object of current user along with its child nodes recursively:
+        * */
+        TreeNode node = new TreeNode(parent, null);
+        node.setId(parent);
+        node.setUser(userDTO);
+
+        TreeNode leftChild = null;
+        if (currentUser.getLeft_child() > 0) {
+            for (User user : users) {
+                if (user.getId() == currentUser.getLeft_child()) {
+                    leftChild = buildUserTree(currentUser.getLeft_child().intValue());
+                }
+            }
+        }
+
+        TreeNode rightChild = null;
+        if (currentUser.getRight_child() > 0) {
+            for (User user : users) {
+                if (user.getId() == currentUser.getRight_child()) {
+                    rightChild = buildUserTree(currentUser.getRight_child().intValue());
+                }
+            }
+        }
+
+        node.setLeft(leftChild);
+        node.setRight(rightChild);
+        return node;
     }
 }
