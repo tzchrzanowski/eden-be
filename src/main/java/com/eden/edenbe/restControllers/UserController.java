@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -41,6 +43,36 @@ public class UserController {
             user.setProfile_picture_url(newProfilePictureUrl);
             userService.updateUserProfile(user);
             return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    };
+
+
+    /*
+    * TODO: Potentially change setting temporary initial password to not be same hardcoded password for every new user.
+    * */
+    @PatchMapping("/add-new-user")
+    public ResponseEntity<String> updateProfilePicture(
+            @RequestBody UserDTO newUserDTO
+    ) {
+        User newUser = new User();
+        newUser.setUsername(newUserDTO.getUsername());
+        newUser.setCreation_date(new Date().toString());
+        newUser.setFirst_name(newUserDTO.getFirst_name());
+        newUser.setLast_name(newUserDTO.getLast_name());
+        newUser.setActive(1); // 1 means active. 0 inactive.
+        newUser.setRole_id(2); // user , not admin.
+        newUser.setEmail(newUserDTO.getEmail());
+        newUser.setParent(newUserDTO.getParent());
+        newUser.setLeft_child(null);
+        newUser.setRight_child(null);
+        newUser.setPassword("$2a$10$xgAuy8VqdA6yNn/JTGw/1eXQBrE2.H1wTyxElJSoFVVRv8w7IHaJm"); // set temporary hardcoded password.
+
+        userService.createUser(newUser);
+        Optional<User> createdUser = userService.getUserByUsername(newUser.getUsername());
+        if (createdUser != null) {
+            return ResponseEntity.ok("User" + createdUser.get().getUsername() + " created");
         } else {
             return ResponseEntity.notFound().build();
         }
