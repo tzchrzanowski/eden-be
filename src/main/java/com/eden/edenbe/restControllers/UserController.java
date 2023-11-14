@@ -134,6 +134,7 @@ public class UserController {
         userDTO.setLast_name(currentUser.getLast_name());
         userDTO.setLeft_child(currentUser.getLeft_child());
         userDTO.setRight_child(currentUser.getRight_child());
+        userDTO.setProfile_picture_url(currentUser.getProfile_picture_url());
 
         /*
         * Setting up the TreeNode object of current user along with its child nodes recursively:
