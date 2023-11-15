@@ -7,11 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -52,26 +51,54 @@ public class UserController {
     /*
     * TODO: Potentially change setting temporary initial password to not be same hardcoded password for every new user.
     * */
-    @PatchMapping("/add-new-user")
-    public ResponseEntity<String> updateProfilePicture(
-            @RequestBody UserDTO newUserDTO
+    @PostMapping(value = "/add-new-user", produces = "application/json")
+    public ResponseEntity<String> addNewUser(
+            @RequestBody Map<String, String> newUserPayload
     ) {
         User newUser = new User();
-        newUser.setUsername(newUserDTO.getUsername());
-        newUser.setCreation_date(new Date().toString());
-        newUser.setFirst_name(newUserDTO.getFirst_name());
-        newUser.setLast_name(newUserDTO.getLast_name());
+
+        /*
+        * first handle date of new account creation:
+        * */
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedForDatabaseDateString = now.format(formatter);
+
+        newUser.setCreation_date(formattedForDatabaseDateString);
+        newUser.setUsername(newUserPayload.get("username"));
+        newUser.setFirst_name(newUserPayload.get("first_name"));
+        newUser.setLast_name(newUserPayload.get("last_name"));
         newUser.setActive(1); // 1 means active. 0 inactive.
         newUser.setRole_id(2); // user , not admin.
-        newUser.setEmail(newUserDTO.getEmail());
-        newUser.setParent(newUserDTO.getParent());
+        newUser.setEmail(newUserPayload.get("email"));
+        newUser.setParent(Integer.parseInt(newUserPayload.get("parent")));
         newUser.setLeft_child(null);
         newUser.setRight_child(null);
+        newUser.setProfile_picture_url("https://www.kindpng.com/picc/m/722-7221920_placeholder-profile-image-placeholder-png-transparent-png.png");
         newUser.setPassword("$2a$10$xgAuy8VqdA6yNn/JTGw/1eXQBrE2.H1wTyxElJSoFVVRv8w7IHaJm"); // set temporary hardcoded password.
 
         userService.createUser(newUser);
         Optional<User> createdUser = userService.getUserByUsername(newUser.getUsername());
         if (createdUser != null) {
+            //--------------------------------------------------------------------------------------
+            /*
+            * Update parent with new child id
+            * */
+            User parentUser = userService.getUserById(Long.parseLong(newUserPayload.get("parent")));
+            if (parentUser != null) {
+                if (parentUser.getLeft_child() == -1) {
+                    parentUser.setLeft_child(createdUser.get().getId());
+                } else {
+                    if (parentUser.getRight_child() == -1) {
+                        parentUser.setRight_child(createdUser.get().getId());
+                    }
+                }
+                userService.updateUserProfile(parentUser);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+            //--------------------------------------------------------------------------------------
+
             return ResponseEntity.ok("User" + createdUser.get().getUsername() + " created");
         } else {
             return ResponseEntity.notFound().build();
