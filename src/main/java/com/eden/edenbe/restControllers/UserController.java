@@ -47,6 +47,26 @@ public class UserController {
         }
     };
 
+    /*
+    * Change password of user:
+    * TODO: add some extra authentication for security
+    * */
+    @PatchMapping("/{userId}/change-password")
+    public ResponseEntity<User> updateUserPassword(
+            @PathVariable Long userId,
+            @RequestBody String newPassword
+    ) {
+        User user = userService.getUserById(userId);
+        if (user != null) {
+            String newHashedPassword = userService.passwordEncoder.encode(newPassword);
+            user.setPassword(newHashedPassword);
+            userService.updateUserProfile(user);
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    };
+
 
     /*
     * TODO: Potentially change setting temporary initial password to not be same hardcoded password for every new user.

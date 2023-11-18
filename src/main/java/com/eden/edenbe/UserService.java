@@ -19,7 +19,7 @@ public class UserService {
     * Password encoder from spring security that helps encode passwords
     * */
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    public PasswordEncoder passwordEncoder;
 
     /*
     * getting all users list
