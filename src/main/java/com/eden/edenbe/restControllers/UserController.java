@@ -52,7 +52,7 @@ public class UserController {
     * TODO: add some extra authentication for security
     * */
     @PatchMapping("/{userId}/change-password")
-    public ResponseEntity<User> updateUserPassword(
+    public ResponseEntity<String> updateUserPassword(
             @PathVariable Long userId,
             @RequestBody String newPassword
     ) {
@@ -61,7 +61,7 @@ public class UserController {
             String newHashedPassword = userService.passwordEncoder.encode(newPassword);
             user.setPassword(newHashedPassword);
             userService.updateUserProfile(user);
-            return ResponseEntity.ok(user);
+            return ResponseEntity.ok("200");
         } else {
             return ResponseEntity.notFound().build();
         }
