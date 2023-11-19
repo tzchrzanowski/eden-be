@@ -1,5 +1,6 @@
 package com.eden.edenbe.config;
 import com.nimbusds.jose.JWSHeader;
+import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import com.nimbusds.jose.JOSEException;
@@ -7,6 +8,8 @@ import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.crypto.MACSigner;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.text.ParseException;
 
 public class JwtUtils {
     // TODO replace with strong key
@@ -35,5 +38,28 @@ public class JwtUtils {
 
         // Serialize to a compact format
         return signedJWT.serialize();
+    }
+
+    public static boolean validateToken(String token) {
+        try {
+            // Parse the token
+            SignedJWT signedJWT = SignedJWT.parse(token);
+
+            // Verify the signature with the HMAC SHA-256 algorithm
+            if (signedJWT.verify(new MACVerifier(SECRET_KEY))) {
+                // Check the expiration time
+                Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+                Date now = new Date();
+
+                return expirationTime != null && expirationTime.after(now);
+            } else {
+                // Token signature verification failed
+                return false;
+            }
+        } catch (ParseException | JOSEException e) {
+            // Handle parsing or verification exception
+            e.printStackTrace();
+            return false;
+        }
     }
 }
