@@ -2,9 +2,11 @@ package com.eden.edenbe.restControllers;
 
 import com.eden.edenbe.User;
 import com.eden.edenbe.UserService;
+import com.eden.edenbe.config.JwtUtils;
 import com.nimbusds.jose.JOSEException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -82,4 +84,36 @@ public class LoginController {
         response.put("message", "Logged out successfully");
         return ResponseEntity.ok(response);
     };
+
+    /*
+     * Authenticate token:
+     * */
+    @GetMapping(value = "/validate", produces = "application/json")
+    public ResponseEntity<Map<String, String>> validateToken(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token
+    ) {
+        String username = JwtUtils.validateToken(token);
+        if(username != null) {
+            Optional<User> user = userService.getUserByUsername(username);
+
+            Map<String, String> response = new HashMap<>();
+            String userType = auth.getUserType(username);
+            String currentUserId = user.get().getId().toString();
+            String currentUserPhoto = user.get().getProfile_picture_url();
+
+            response.put("token", token);
+            response.put("status", "200");
+            response.put("role_id", userType);
+            response.put("user_id", currentUserId);
+            response.put("user_photo", currentUserPhoto);
+            response.put("username", username);
+
+            return ResponseEntity.ok(response);
+        } else {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Invalid token");
+            errorResponse.put("status", "401");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        }
+    }
 }

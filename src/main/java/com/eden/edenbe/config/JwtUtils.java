@@ -40,7 +40,7 @@ public class JwtUtils {
         return signedJWT.serialize();
     }
 
-    public static boolean validateToken(String token) {
+    public static String validateToken(String token) {
         try {
             // Parse the token
             SignedJWT signedJWT = SignedJWT.parse(token);
@@ -51,15 +51,14 @@ public class JwtUtils {
                 Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
                 Date now = new Date();
 
-                return expirationTime != null && expirationTime.after(now);
-            } else {
-                // Token signature verification failed
-                return false;
+                if (expirationTime != null && expirationTime.after(now)) {
+                    return signedJWT.getJWTClaimsSet().getSubject();
+                }
             }
         } catch (ParseException | JOSEException e) {
             // Handle parsing or verification exception
             e.printStackTrace();
-            return false;
         }
+        return null;
     }
 }

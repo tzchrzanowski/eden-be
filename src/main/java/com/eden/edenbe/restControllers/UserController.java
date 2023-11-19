@@ -73,20 +73,6 @@ public class UserController {
     };
 
     /*
-    * Authenticate token:
-    * */
-    @GetMapping("/validate")
-    public ResponseEntity<String> validateToken(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String token
-    ) {
-        if(JwtUtils.validateToken(token)) {
-            return ResponseEntity.ok("Token is valid");
-        } else {
-            return ResponseEntity.status(401).body("Token is not valid");
-        }
-    }
-
-    /*
     * TODO: Potentially change setting temporary initial password to not be same hardcoded password for every new user.
     * */
     @PostMapping(value = "/add-new-user", produces = "application/json")
