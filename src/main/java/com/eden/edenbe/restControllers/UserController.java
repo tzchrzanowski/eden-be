@@ -54,22 +54,26 @@ public class UserController {
 
     /*
     * Change password of user:
+    * payload object sent from frontend includes two parameters "newPassword" and "token"
     * TODO: add some extra authentication for security
     * */
     @PatchMapping("/{userId}/change-password")
     public ResponseEntity<String> updateUserPassword(
             @PathVariable Long userId,
-            @RequestBody String newPassword
+            @RequestBody  Map<String, String> payload
     ) {
-        User user = userService.getUserById(userId);
-        if (user != null) {
-            String newHashedPassword = userService.passwordEncoder.encode(newPassword);
-            user.setPassword(newHashedPassword);
-            userService.updateUserProfile(user);
-            return ResponseEntity.ok("200");
-        } else {
-            return ResponseEntity.notFound().build();
+        if (JwtUtils.validateToken(payload.get("token")) != null) {
+            User user = userService.getUserById(userId);
+            if (user != null) {
+                String newHashedPassword = userService.passwordEncoder.encode(payload.get("newPassword"));
+                user.setPassword(newHashedPassword);
+                userService.updateUserProfile(user);
+                return ResponseEntity.ok("200");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
         }
+        return ResponseEntity.notFound().build();
     };
 
     /*
