@@ -39,17 +39,21 @@ public class UserController {
     @PatchMapping("/{userId}/update-profile-picture")
     public ResponseEntity<User> updateProfilePicture(
             @PathVariable Long userId,
-            @RequestBody String newProfilePictureUrl
+            @RequestBody Map<String, String> payloadProfilePicture
     ) {
-        User user = userService.getUserById(userId);
-        if (user != null) {
-            // Gets user's profile picture URL:
-            user.setProfile_picture_url(newProfilePictureUrl);
-            userService.updateUserProfile(user);
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.notFound().build();
+        if (JwtUtils.validateToken(payloadProfilePicture.get("token")) != null) {
+            User user = userService.getUserById(userId);
+            if (user != null) {
+                // Gets user's profile picture URL:
+                String newPictureUrl = payloadProfilePicture.get("newProfilePictureUrl");
+                user.setProfile_picture_url(newPictureUrl);
+                userService.updateUserProfile(user);
+                return ResponseEntity.ok(user);
+            } else {
+                ResponseEntity.notFound().build();
+            }
         }
+        return ResponseEntity.badRequest().build();
     };
 
     /*
