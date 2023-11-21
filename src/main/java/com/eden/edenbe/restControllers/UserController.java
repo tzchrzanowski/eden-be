@@ -81,9 +81,10 @@ public class UserController {
     * */
     @PostMapping(value = "/add-new-user", produces = "application/json")
     public ResponseEntity<String> addNewUser(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
             @RequestBody Map<String, String> newUserPayload
     ) {
-        if (JwtUtils.validateToken(newUserPayload.get("token")) != null) {
+        if (JwtUtils.validateToken(token) != null) {
             User newUser = new User();
 
             /*
