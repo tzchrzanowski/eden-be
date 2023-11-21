@@ -4,18 +4,14 @@ import com.eden.edenbe.User;
 import com.eden.edenbe.UserDTO;
 import com.eden.edenbe.UserService;
 import com.eden.edenbe.config.JwtUtils;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.Authentication;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -142,11 +138,15 @@ public class UserController {
 
     @GetMapping("/{parent}/get-network")
     public TreeNode getUsersByParentEndpoint(
-            @PathVariable int parent
+            @PathVariable int parent,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token
     ) {
-        if(parent > 0) {
-            TreeNode userTree = buildUserTree(parent);
-            return userTree;
+        String username = JwtUtils.validateToken(token);
+        if(username != null) {
+            if(parent > 0) {
+                TreeNode userTree = buildUserTree(parent);
+                return userTree;
+            }
         }
         return new TreeNode();
     }
