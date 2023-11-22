@@ -76,6 +76,8 @@ public class UserController {
     };
 
     /*
+    * endpoint allows to create new user.
+    * newUserPayload object parameters: username, email, first_name, last_name, parent, package
     * TODO: Potentially change setting temporary initial password to not be same hardcoded password for every new user.
     * */
     @PostMapping(value = "/add-new-user", produces = "application/json")
@@ -101,12 +103,13 @@ public class UserController {
             newUser.setRole_id(2); // user , not admin.
             newUser.setEmail(newUserPayload.get("email"));
             newUser.setParent(Integer.parseInt(newUserPayload.get("parent")));
+            newUser.setPackageType(newUserPayload.get("package"));
             newUser.setLeft_child(null);
             newUser.setRight_child(null);
             newUser.setProfile_picture_url("https://www.kindpng.com/picc/m/722-7221920_placeholder-profile-image-placeholder-png-transparent-png.png");
             newUser.setPassword("$2a$10$xgAuy8VqdA6yNn/JTGw/1eXQBrE2.H1wTyxElJSoFVVRv8w7IHaJm"); // set temporary hardcoded password.
-
             userService.createUser(newUser);
+
             Optional<User> createdUser = userService.getUserByUsername(newUser.getUsername());
             if (createdUser != null) {
                 //--------------------------------------------------------------------------------------

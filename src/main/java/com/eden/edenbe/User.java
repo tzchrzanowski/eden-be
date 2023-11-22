@@ -22,7 +22,7 @@ public class User {
     private int active;
     private int role_id;
     private Integer points;
-    private String packageType;
+    private String package_type;
 
     public User() {
     }
@@ -43,7 +43,7 @@ public class User {
         Long right_child,
         int parent,
         int points,
-        String packageType
+        String package_type
     ) {
         this.id = id;
         this.username = username;
@@ -58,7 +58,7 @@ public class User {
         this.right_child = right_child;
         this.parent = parent;
         this.points = points;
-        this.packageType = packageType;
+        this.package_type = package_type;
     }
 
     /*
@@ -121,7 +121,7 @@ public class User {
     }
 
     public String getPackageType() {
-        return this.packageType;
+        return this.package_type;
     }
 
     /*
@@ -167,6 +167,6 @@ public class User {
         this.points = newPoints;
     }
     public void setPackageType(String newPackageType) {
-        this.packageType = packageType;
+        this.package_type = newPackageType;
     }
 }
