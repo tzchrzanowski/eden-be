@@ -10,7 +10,7 @@ public class UserDTO {
     private Integer parent;
     private Long left_child;
     private Long right_child;
-    private String packageType;
+    private String package_type;
     private Integer points;
 
     /*
@@ -36,7 +36,7 @@ public class UserDTO {
     public Long getLeft_child() {return this.left_child; }
     public Long getRight_child() {return this.right_child;}
     public Integer getPoints() { return this.points; }
-    public String getPackageType() { return this.packageType; }
+    public String getPackageType() { return this.package_type; }
 
     /*
     * Setters:
@@ -66,6 +66,6 @@ public class UserDTO {
         this.points = newPoints;
     }
     public void setPackageType(String newPackageType) {
-        this.packageType = newPackageType;
+        this.package_type = newPackageType;
     }
 }
