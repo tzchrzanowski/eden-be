@@ -55,7 +55,6 @@ public class UserController {
     /*
     * Change password of user:
     * payload object sent from frontend includes two parameters "newPassword" and "token"
-    * TODO: add some extra authentication for security
     * */
     @PatchMapping("/{userId}/change-password")
     public ResponseEntity<String> updateUserPassword(
@@ -175,6 +174,8 @@ public class UserController {
         userDTO.setLeft_child(currentUser.getLeft_child());
         userDTO.setRight_child(currentUser.getRight_child());
         userDTO.setProfile_picture_url(currentUser.getProfile_picture_url());
+        userDTO.setPoints(currentUser.getPoints());
+        userDTO.setPackageType(currentUser.getPackageType());
 
         /*
         * Setting up the TreeNode object of current user along with its child nodes recursively:

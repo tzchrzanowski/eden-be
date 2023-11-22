@@ -21,6 +21,8 @@ public class User {
     private Long right_child;
     private int active;
     private int role_id;
+    private Integer points;
+    private String packageType;
 
     public User() {
     }
@@ -39,7 +41,9 @@ public class User {
         int role_id,
         Long left_child,
         Long right_child,
-        int parent
+        int parent,
+        int points,
+        String packageType
     ) {
         this.id = id;
         this.username = username;
@@ -53,6 +57,8 @@ public class User {
         this.left_child = left_child;
         this.right_child = right_child;
         this.parent = parent;
+        this.points = points;
+        this.packageType = packageType;
     }
 
     /*
@@ -110,6 +116,13 @@ public class User {
             return this.right_child;
         }
     }
+    public Integer getPoints() {
+        return this.points;
+    }
+
+    public String getPackageType() {
+        return this.packageType;
+    }
 
     /*
     * Setters:
@@ -150,4 +163,10 @@ public class User {
     public void setParent(int newParent) { this.parent = newParent;}
     public void setLeft_child(Long newLeftChildId) {this.left_child = newLeftChildId; }
     public void setRight_child(Long newRightChildId) {this.right_child = newRightChildId; }
+    public void setPoints(Integer newPoints) {
+        this.points = newPoints;
+    }
+    public void setPackageType(String newPackageType) {
+        this.packageType = packageType;
+    }
 }
