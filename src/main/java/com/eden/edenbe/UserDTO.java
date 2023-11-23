@@ -1,5 +1,8 @@
 package com.eden.edenbe;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class UserDTO {
     private Long id;
     private String username;
@@ -12,6 +15,7 @@ public class UserDTO {
     private Long right_child;
     private String package_type;
     private Integer points;
+    private BigDecimal money_amount;
 
     /*
      * Getters
@@ -37,6 +41,7 @@ public class UserDTO {
     public Long getRight_child() {return this.right_child;}
     public Integer getPoints() { return this.points; }
     public String getPackageType() { return this.package_type; }
+    public BigDecimal getMoney_amount() { return this.money_amount; }
 
     /*
     * Setters:
@@ -68,4 +73,5 @@ public class UserDTO {
     public void setPackageType(String newPackageType) {
         this.package_type = newPackageType;
     }
+    public void setMoney_amount(BigDecimal new_money_amount) { this.money_amount = new_money_amount.setScale(2, RoundingMode.HALF_UP); }
 }

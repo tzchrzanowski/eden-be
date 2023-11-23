@@ -2,6 +2,9 @@ package com.eden.edenbe;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 @Entity
 @Table(name="users")
 public class User {
@@ -23,6 +26,7 @@ public class User {
     private int role_id;
     private Integer points;
     private String package_type;
+    private BigDecimal money_amount;
 
     public User() {
     }
@@ -43,7 +47,8 @@ public class User {
         Long right_child,
         int parent,
         int points,
-        String package_type
+        String package_type,
+        BigDecimal new_money_amount
     ) {
         this.id = id;
         this.username = username;
@@ -59,6 +64,7 @@ public class User {
         this.parent = parent;
         this.points = points;
         this.package_type = package_type;
+        this.money_amount = new_money_amount.setScale(2, RoundingMode.HALF_UP);
     }
 
     /*
@@ -123,6 +129,7 @@ public class User {
     public String getPackageType() {
         return this.package_type;
     }
+    public BigDecimal getMoney_amount() { return this.money_amount; }
 
     /*
     * Setters:
@@ -169,4 +176,5 @@ public class User {
     public void setPackageType(String newPackageType) {
         this.package_type = newPackageType;
     }
+    public void setMoney_amount(BigDecimal new_money_amount) { this.money_amount = new_money_amount.setScale(2, RoundingMode.HALF_UP); }
 }

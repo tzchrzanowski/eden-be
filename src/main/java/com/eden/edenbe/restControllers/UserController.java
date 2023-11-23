@@ -4,6 +4,7 @@ import com.eden.edenbe.User;
 import com.eden.edenbe.UserDTO;
 import com.eden.edenbe.UserService;
 import com.eden.edenbe.config.JwtUtils;
+import com.eden.edenbe.packages.MoneyCalc;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -104,6 +105,8 @@ public class UserController {
             newUser.setEmail(newUserPayload.get("email"));
             newUser.setParent(Integer.parseInt(newUserPayload.get("parent")));
             newUser.setPackageType(newUserPayload.get("package"));
+            MoneyCalc calculations = new MoneyCalc();
+            newUser.setMoney_amount(calculations.calculatePackage(newUser.getPackageType()));
             newUser.setLeft_child(null);
             newUser.setRight_child(null);
             newUser.setProfile_picture_url("https://www.kindpng.com/picc/m/722-7221920_placeholder-profile-image-placeholder-png-transparent-png.png");
@@ -179,6 +182,7 @@ public class UserController {
         userDTO.setProfile_picture_url(currentUser.getProfile_picture_url());
         userDTO.setPoints(currentUser.getPoints());
         userDTO.setPackageType(currentUser.getPackageType());
+        userDTO.setMoney_amount(currentUser.getMoney_amount());
 
         /*
         * Setting up the TreeNode object of current user along with its child nodes recursively:
