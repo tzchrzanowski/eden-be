@@ -28,9 +28,14 @@ public class UserController {
 //        this.auth = authentication;
 //    }
 
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    @GetMapping("/get-all-users")
+    public List<UserDTO> getAllUsers(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token
+    ) {
+        if (JwtUtils.validateToken(token) != null) {
+            return userService.getAllUsersDTO();
+        }
+        return null;
     }
 
     @PatchMapping("/{userId}/update-profile-picture")

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -26,6 +27,39 @@ public class UserService {
     * */
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    /*
+    * getting all users list with limited informations:
+    * */
+    public List<UserDTO> getAllUsersDTO() {
+        List<User> users = userRepository.findAll();
+        List<UserDTO> userDTOs = users.stream()
+                .map(user -> mapToUserDTO(user))
+                .collect(Collectors.toList());
+
+        return userDTOs;
+    }
+
+    /*
+    * method used by getAllUsersDTO to re-map selected user attributes into UserDTO user
+    * */
+    private UserDTO mapToUserDTO(User user) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setFirst_name(user.getFirst_name());
+        userDTO.setLast_name(user.getLast_name());
+        userDTO.setProfile_picture_url(user.getProfile_picture_url());
+        userDTO.setId(user.getId());
+        userDTO.setUsername(user.getUsername());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setParent(user.getParent());
+        userDTO.setLeft_child(user.getLeft_child());
+        userDTO.setRight_child(user.getRight_child());
+        userDTO.setPoints(user.getPoints());
+        userDTO.setPackageType(user.getPackageType());
+        userDTO.setMoney_amount(user.getMoney_amount());
+
+        return userDTO;
     }
 
     /*
