@@ -59,6 +59,32 @@ public class UserController {
     };
 
     /*
+    * Add points to user account:
+    *
+    * */
+    @PatchMapping("/{userId}/add-points")
+    public ResponseEntity<String> addPointsToUser(
+            @PathVariable Long userId,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+            @RequestBody  Map<String, Integer> addPointsPayload
+    ) {
+        if (JwtUtils.validateToken(token) != null) {
+            User user = userService.getUserById(userId);
+            if (user != null) {
+                Integer pointsToAdd = addPointsPayload.get("points");
+                Integer currentPoints = user.getPoints();
+                Integer sumPoints = currentPoints + pointsToAdd;
+                user.setPoints(sumPoints);
+                userService.updateUserProfile(user);
+                return ResponseEntity.ok("200");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        }
+        return ResponseEntity.badRequest().build();
+    };
+
+    /*
     * Change password of user:
     * payload object sent from frontend includes two parameters "newPassword" and "token"
     * */
