@@ -16,7 +16,7 @@ public class UserDTO {
     private String package_type;
     private Integer points;
     private BigDecimal money_amount;
-
+    private int role_id;
     /*
      * Getters
      * */
@@ -42,6 +42,9 @@ public class UserDTO {
     public Integer getPoints() { return this.points; }
     public String getPackageType() { return this.package_type; }
     public BigDecimal getMoney_amount() { return this.money_amount; }
+    public int getRole_id() {
+        return this.role_id;
+    }
 
     /*
     * Setters:
@@ -74,4 +77,8 @@ public class UserDTO {
         this.package_type = newPackageType;
     }
     public void setMoney_amount(BigDecimal new_money_amount) { this.money_amount = new_money_amount.setScale(2, RoundingMode.HALF_UP); }
+    public void setRole_id(int newRoleId) {
+        this.role_id = newRoleId;
+    }
+
 }

@@ -58,7 +58,7 @@ public class UserService {
         userDTO.setPoints(user.getPoints());
         userDTO.setPackageType(user.getPackageType());
         userDTO.setMoney_amount(user.getMoney_amount());
-
+        userDTO.setRole_id(user.getRole_id());
         return userDTO;
     }
 
