@@ -30,15 +30,24 @@ public class UserService {
     }
 
     /*
-    * getting all users list with limited informations:
+    * getting all users list with limited attributes:
+    * returns only users that are not an accountants
     * */
     public List<UserDTO> getAllUsersDTO() {
         List<User> users = userRepository.findAll();
         List<UserDTO> userDTOs = users.stream()
+                .filter(user -> !isUserAnAccountant(user))
                 .map(user -> mapToUserDTO(user))
                 .collect(Collectors.toList());
 
         return userDTOs;
+    }
+
+    /*
+    * Checks if user is an accountant:
+    * */
+    private boolean isUserAnAccountant(User user) {
+        return user.getRole_id() == 3;
     }
 
     /*
