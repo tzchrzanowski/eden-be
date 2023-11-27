@@ -138,6 +138,7 @@ public class UserController {
             newUser.setPackageType(newUserPayload.get("package"));
             MoneyCalc calculations = new MoneyCalc();
             newUser.setMoney_amount(calculations.calculatePackage(newUser.getPackageType()));
+            newUser.setPoints(calculations.getInitialPointsForPackage(newUser.getPackageType()));
             newUser.setLeft_child(null);
             newUser.setRight_child(null);
             newUser.setProfile_picture_url("https://www.kindpng.com/picc/m/722-7221920_placeholder-profile-image-placeholder-png-transparent-png.png");
