@@ -27,6 +27,7 @@ public class User {
     private Integer points;
     private String package_type;
     private BigDecimal money_amount;
+    private Integer direct_referral;
 
     public User() {
     }
@@ -48,7 +49,8 @@ public class User {
         int parent,
         int points,
         String package_type,
-        BigDecimal new_money_amount
+        BigDecimal new_money_amount,
+        Integer direct_referral
     ) {
         this.id = id;
         this.username = username;
@@ -65,6 +67,7 @@ public class User {
         this.points = points;
         this.package_type = package_type;
         this.money_amount = new_money_amount.setScale(2, RoundingMode.HALF_UP);
+        this.direct_referral = direct_referral;
     }
 
     /*
@@ -130,6 +133,7 @@ public class User {
         return this.package_type;
     }
     public BigDecimal getMoney_amount() { return this.money_amount; }
+    public Integer getDirect_referral() { return this.direct_referral; }
 
     /*
     * Setters:
@@ -177,4 +181,5 @@ public class User {
         this.package_type = newPackageType;
     }
     public void setMoney_amount(BigDecimal new_money_amount) { this.money_amount = new_money_amount.setScale(2, RoundingMode.HALF_UP); }
+    public void setDirect_referral(Integer direct_referral) { this.direct_referral = direct_referral; }
 }

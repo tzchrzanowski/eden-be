@@ -68,6 +68,7 @@ public class UserService {
         userDTO.setPackageType(user.getPackageType());
         userDTO.setMoney_amount(user.getMoney_amount());
         userDTO.setRole_id(user.getRole_id());
+        userDTO.setDirect_referral(user.getDirect_referral());
         return userDTO;
     }
 

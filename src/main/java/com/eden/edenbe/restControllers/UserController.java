@@ -109,7 +109,7 @@ public class UserController {
 
     /*
     * endpoint allows to create new user.
-    * newUserPayload object parameters: username, email, first_name, last_name, parent, package
+    * newUserPayload object parameters: username, email, first_name, last_name, parent, package, direct_referral
     * TODO: Potentially change setting temporary initial password to not be same hardcoded password for every new user.
     * */
     @PostMapping(value = "/add-new-user", produces = "application/json")
@@ -135,6 +135,7 @@ public class UserController {
             newUser.setRole_id(2); // user , not admin.
             newUser.setEmail(newUserPayload.get("email"));
             newUser.setParent(Integer.parseInt(newUserPayload.get("parent")));
+            newUser.setDirect_referral(Integer.parseInt(newUserPayload.get("direct_referral")));
             newUser.setPackageType(newUserPayload.get("package"));
             MoneyCalc calculations = new MoneyCalc();
             newUser.setMoney_amount(calculations.calculatePackage(newUser.getPackageType()));
