@@ -121,31 +121,47 @@ public class UserController {
             User newUser = new User();
 
             /*
+            * Get direct referral user id:
+            * */
+            Long direct_referral_id = userService.getUserByUsername(newUserPayload.get("direct_referral")).get().getId();
+            newUser.setDirect_referral(direct_referral_id);
+
+            /*
              * first handle date of new account creation:
              * */
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formattedForDatabaseDateString = now.format(formatter);
-
             newUser.setCreation_date(formattedForDatabaseDateString);
+
+            /*
+            * Set package, money and points for new user
+            * */
+            MoneyCalc calculations = new MoneyCalc();
+            newUser.setPackageType(newUserPayload.get("package"));
+            newUser.setMoney_amount(calculations.calculatePackage(newUser.getPackageType()));
+            newUser.setPoints(calculations.getInitialPointsForPackage(newUser.getPackageType()));
+
+            /*
+            * Tree structure user values:
+            * */
+            newUser.setParent(Integer.parseInt(newUserPayload.get("parent"))); // parent in tree, not direct_referral
+            newUser.setLeft_child(null);
+            newUser.setRight_child(null);
+
+            /*
+             * set remaining fields for new user:
+             * */
             newUser.setUsername(newUserPayload.get("username"));
             newUser.setFirst_name(newUserPayload.get("first_name"));
             newUser.setLast_name(newUserPayload.get("last_name"));
             newUser.setActive(1); // 1 means active. 0 inactive.
             newUser.setRole_id(2); // user , not admin.
             newUser.setEmail(newUserPayload.get("email"));
-            newUser.setParent(Integer.parseInt(newUserPayload.get("parent")));
-            newUser.setDirect_referral(Integer.parseInt(newUserPayload.get("direct_referral")));
-            newUser.setPackageType(newUserPayload.get("package"));
-            MoneyCalc calculations = new MoneyCalc();
-            newUser.setMoney_amount(calculations.calculatePackage(newUser.getPackageType()));
-            newUser.setPoints(calculations.getInitialPointsForPackage(newUser.getPackageType()));
-            newUser.setLeft_child(null);
-            newUser.setRight_child(null);
             newUser.setProfile_picture_url("https://www.kindpng.com/picc/m/722-7221920_placeholder-profile-image-placeholder-png-transparent-png.png");
             newUser.setPassword("$2a$10$xgAuy8VqdA6yNn/JTGw/1eXQBrE2.H1wTyxElJSoFVVRv8w7IHaJm"); // set temporary hardcoded password.
-            userService.createUser(newUser);
 
+            userService.createUser(newUser);
             Optional<User> createdUser = userService.getUserByUsername(newUser.getUsername());
             if (createdUser != null) {
                 //--------------------------------------------------------------------------------------

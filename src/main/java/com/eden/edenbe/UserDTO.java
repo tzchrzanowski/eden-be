@@ -17,7 +17,7 @@ public class UserDTO {
     private Integer points;
     private BigDecimal money_amount;
     private int role_id;
-    private Integer direct_referral;
+    private Long direct_referral;
 
     /*
      * Getters
@@ -47,7 +47,7 @@ public class UserDTO {
     public int getRole_id() {
         return this.role_id;
     }
-    public Integer getDirect_referral() { return this.direct_referral; }
+    public Long getDirect_referral() { return this.direct_referral; }
 
     /*
     * Setters:
@@ -83,5 +83,5 @@ public class UserDTO {
     public void setRole_id(int newRoleId) {
         this.role_id = newRoleId;
     }
-    public void setDirect_referral(Integer direct_referral) { this.direct_referral = direct_referral; }
+    public void setDirect_referral(Long direct_referral) { this.direct_referral = direct_referral; }
 }
