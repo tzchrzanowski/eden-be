@@ -25,6 +25,7 @@ public class User {
     private int active;
     private int role_id;
     private Integer points;
+    private Integer monthly_points;
     private String package_type;
     private BigDecimal money_amount;
     private Long direct_referral;
@@ -48,6 +49,7 @@ public class User {
         Long right_child,
         int parent,
         int points,
+        int monthly_points,
         String package_type,
         BigDecimal new_money_amount,
         Long direct_referral
@@ -65,6 +67,7 @@ public class User {
         this.right_child = right_child;
         this.parent = parent;
         this.points = points;
+        this.monthly_points = monthly_points;
         this.package_type = package_type;
         this.money_amount = new_money_amount.setScale(2, RoundingMode.HALF_UP);
         this.direct_referral = direct_referral;
@@ -128,7 +131,7 @@ public class User {
     public Integer getPoints() {
         return this.points;
     }
-
+    public Integer getMonthly_points() { return this.monthly_points; }
     public String getPackageType() {
         return this.package_type;
     }
@@ -177,6 +180,7 @@ public class User {
     public void setPoints(Integer newPoints) {
         this.points = newPoints;
     }
+    public void setMonthly_points(Integer newMonthlyPoints) { this.monthly_points = newMonthlyPoints; }
     public void setPackageType(String newPackageType) {
         this.package_type = newPackageType;
     }

@@ -15,6 +15,7 @@ public class UserDTO {
     private Long right_child;
     private String package_type;
     private Integer points;
+    private Integer monthly_points;
     private BigDecimal money_amount;
     private int role_id;
     private Long direct_referral;
@@ -42,6 +43,7 @@ public class UserDTO {
     public Long getLeft_child() {return this.left_child; }
     public Long getRight_child() {return this.right_child;}
     public Integer getPoints() { return this.points; }
+    public Integer getMonthly_points() { return this.monthly_points; }
     public String getPackageType() { return this.package_type; }
     public BigDecimal getMoney_amount() { return this.money_amount; }
     public int getRole_id() {
@@ -76,6 +78,7 @@ public class UserDTO {
     public void setPoints(Integer newPoints) {
         this.points = newPoints;
     }
+    public void setMonthly_points(Integer newMonthlyPoints) {this.monthly_points = newMonthlyPoints; }
     public void setPackageType(String newPackageType) {
         this.package_type = newPackageType;
     }

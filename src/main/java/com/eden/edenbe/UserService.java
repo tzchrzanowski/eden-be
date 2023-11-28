@@ -65,6 +65,7 @@ public class UserService {
         userDTO.setLeft_child(user.getLeft_child());
         userDTO.setRight_child(user.getRight_child());
         userDTO.setPoints(user.getPoints());
+        userDTO.setMonthly_points(user.getMonthly_points());
         userDTO.setPackageType(user.getPackageType());
         userDTO.setMoney_amount(user.getMoney_amount());
         userDTO.setRole_id(user.getRole_id());

@@ -72,9 +72,9 @@ public class UserController {
             User user = userService.getUserById(userId);
             if (user != null) {
                 Integer pointsToAdd = addPointsPayload.get("points");
-                Integer currentPoints = user.getPoints();
-                Integer sumPoints = currentPoints + pointsToAdd;
-                user.setPoints(sumPoints);
+                Integer currentMonthlyPoints = user.getMonthly_points();
+                Integer sumPoints = currentMonthlyPoints + pointsToAdd;
+                user.setMonthly_points(sumPoints);
                 userService.updateUserProfile(user);
                 return ResponseEntity.ok("200");
             } else {
@@ -136,11 +136,13 @@ public class UserController {
 
             /*
             * Set package, money and points for new user
+            * Initial monthly points are always 0
             * */
             MoneyCalc calculations = new MoneyCalc();
             newUser.setPackageType(newUserPayload.get("package"));
             newUser.setMoney_amount(calculations.calculatePackage(newUser.getPackageType()));
             newUser.setPoints(calculations.getInitialPointsForPackage(newUser.getPackageType()));
+            newUser.setMonthly_points(0);
 
             /*
             * Tree structure user values:
