@@ -7,7 +7,6 @@ import com.eden.edenbe.config.JwtUtils;
 import com.eden.edenbe.packages.MoneyCalc;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -101,8 +100,8 @@ public class UserController {
             if (user != null) {
                 Integer monthlyPointsToAdd = user.get().getMonthly_points();
                 if (monthlyPointsToAdd >= 20) {
-                    Integer currentMonthlyPoints = user.get().getMonthly_points();
-                    Integer sumPoints = currentMonthlyPoints + monthlyPointsToAdd;
+                    Integer currentUserPoints = user.get().getPoints();
+                    Integer sumPoints = currentUserPoints + monthlyPointsToAdd;
                     user.get().setPoints(sumPoints);
                     user.get().setMonthly_points(0);
                     userService.updateUserProfile(user.get());
