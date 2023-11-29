@@ -7,6 +7,7 @@ import com.eden.edenbe.config.JwtUtils;
 import com.eden.edenbe.packages.MoneyCalc;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -77,6 +78,37 @@ public class UserController {
                 user.setMonthly_points(sumPoints);
                 userService.updateUserProfile(user);
                 return ResponseEntity.ok("200");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        }
+        return ResponseEntity.badRequest().build();
+    };
+
+    /*
+     * Add points to user account:
+     * payload has: username
+     * Monthly points will go all the way to 0 regardless how many there are. all monthly points will be assigned to user points
+     * */
+    @PatchMapping("/add-monthly-points-for-user")
+    public ResponseEntity<String> addMonthlyPointsToUser(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+            @RequestBody  Map<String, String> addMonthlyPointsPayload
+    ) {
+        if (JwtUtils.validateToken(token) != null) {
+            Optional<User> user = userService.getUserByUsername(addMonthlyPointsPayload.get("username"));
+            if (user != null) {
+                Integer monthlyPointsToAdd = user.get().getMonthly_points();
+                if (monthlyPointsToAdd >= 20) {
+                    Integer currentMonthlyPoints = user.get().getMonthly_points();
+                    Integer sumPoints = currentMonthlyPoints + monthlyPointsToAdd;
+                    user.get().setPoints(sumPoints);
+                    user.get().setMonthly_points(0);
+                    userService.updateUserProfile(user.get());
+                    return ResponseEntity.ok("200");
+                } else {
+                    return ResponseEntity.notFound().build();
+                }
             } else {
                 return ResponseEntity.notFound().build();
             }
