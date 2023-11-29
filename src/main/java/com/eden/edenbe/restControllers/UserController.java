@@ -11,6 +11,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -153,10 +154,30 @@ public class UserController {
             User newUser = new User();
 
             /*
+             * Set package, money and points for new user
+             * Initial monthly points are always 0
+             * */
+            MoneyCalc calculations = new MoneyCalc();
+            newUser.setPackageType(newUserPayload.get("package"));
+            newUser.setMoney_amount(calculations.calculatePackage(newUser.getPackageType()));
+            newUser.setPoints(calculations.getInitialPointsForPackage(newUser.getPackageType()));
+            newUser.setMonthly_points(0);
+
+            /*
             * Get direct referral user id:
             * */
             Long direct_referral_id = userService.getUserByUsername(newUserPayload.get("direct_referral")).get().getId();
             newUser.setDirect_referral(direct_referral_id);
+
+            /*
+            * Set money bonus to direct-referral-parent for adding new user based on package type:
+            * */
+            User directReferralParent = userService.getUserById(direct_referral_id);
+            BigDecimal directReferralParentMoney = directReferralParent.getMoney_amount();
+            BigDecimal moneyToAddForReferral = calculations.getMoneyForSellingPackage(newUserPayload.get("package"));
+            BigDecimal directReferralParentMoneySum = directReferralParentMoney.add(moneyToAddForReferral) ;
+            directReferralParent.setMoney_amount(directReferralParentMoneySum);
+            userService.updateUserProfile(directReferralParent);
 
             /*
              * first handle date of new account creation:
@@ -165,16 +186,6 @@ public class UserController {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formattedForDatabaseDateString = now.format(formatter);
             newUser.setCreation_date(formattedForDatabaseDateString);
-
-            /*
-            * Set package, money and points for new user
-            * Initial monthly points are always 0
-            * */
-            MoneyCalc calculations = new MoneyCalc();
-            newUser.setPackageType(newUserPayload.get("package"));
-            newUser.setMoney_amount(calculations.calculatePackage(newUser.getPackageType()));
-            newUser.setPoints(calculations.getInitialPointsForPackage(newUser.getPackageType()));
-            newUser.setMonthly_points(0);
 
             /*
             * Tree structure user values:
