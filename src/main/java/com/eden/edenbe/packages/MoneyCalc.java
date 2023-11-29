@@ -9,7 +9,7 @@ public class MoneyCalc {
     private BigDecimal diamond_money_amount = new BigDecimal(35998);
     private Integer silver_package_points = 40;
     private Integer gold_package_points = 120;
-    private Integer diamond_package_points = 180;
+    private Integer diamond_package_points = 360;
 
     public BigDecimal calculatePackage(String package_type) {
         switch (package_type) {
