@@ -117,6 +117,39 @@ public class UserController {
     };
 
     /*
+     * Add points to user account:
+     * payload has: username
+     * Monthly points will go all the way to 0 regardless how many there are. all monthly points will be assigned to user points
+     * */
+    @PatchMapping("/add-monthly-points-for-all-users")
+    public ResponseEntity<Integer> addMonthlyPointsToAllUsers(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+            @RequestBody  Map<String, String> addMonthlyPointsPayload
+    ) {
+        if (JwtUtils.validateToken(token) != null) {
+            List<User> users = userService.getAllUsers();
+
+            if (users != null) {
+                for (User user : users) {
+                    if (user.getMonthly_points() >= 20) {
+                        Integer sum = user.getPoints() + user.getMonthly_points();
+                        user.setPoints(sum);
+                        user.setMonthly_points(0);
+                        userService.updateUserProfile(user);
+                    } else {
+                        user.setMonthly_points(0);
+                        userService.updateUserProfile(user);
+                    }
+                }
+                return ResponseEntity.ok(200);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        }
+        return ResponseEntity.badRequest().build();
+    };
+
+    /*
     * Change password of user:
     * payload object sent from frontend includes two parameters "newPassword" and "token"
     * */
