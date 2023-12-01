@@ -12,7 +12,6 @@ public class MoneyCalc {
     private BigDecimal gold_bonus_money_for_referral = new BigDecimal(600);
     private BigDecimal diamond_bonus_money_for_referral = new BigDecimal(1800);
 
-
     private Integer silver_package_points = 40;
     private Integer gold_package_points = 120;
     private Integer diamond_package_points = 360;

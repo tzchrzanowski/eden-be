@@ -99,7 +99,7 @@ public class UserController {
             Optional<User> user = userService.getUserByUsername(addMonthlyPointsPayload.get("username"));
             if (user != null) {
                 Integer monthlyPointsToAdd = user.get().getMonthly_points();
-                if (monthlyPointsToAdd >= 20) {
+                if (monthlyPointsToAdd >= 40) {
                     Integer currentUserPoints = user.get().getPoints();
                     Integer sumPoints = currentUserPoints + monthlyPointsToAdd;
                     user.get().setPoints(sumPoints);
@@ -131,7 +131,7 @@ public class UserController {
 
             if (users != null) {
                 for (User user : users) {
-                    if (user.getMonthly_points() >= 20) {
+                    if (user.getMonthly_points() >= 40) {
                         Integer sum = user.getPoints() + user.getMonthly_points();
                         user.setPoints(sum);
                         user.setMonthly_points(0);
