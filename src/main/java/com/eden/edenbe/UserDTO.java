@@ -19,6 +19,7 @@ public class UserDTO {
     private BigDecimal money_amount;
     private int role_id;
     private Long direct_referral;
+    private boolean cash_out;
 
     /*
      * Getters
@@ -50,6 +51,7 @@ public class UserDTO {
         return this.role_id;
     }
     public Long getDirect_referral() { return this.direct_referral; }
+    public boolean getCashOut() { return this.cash_out; }
 
     /*
     * Setters:
@@ -87,4 +89,5 @@ public class UserDTO {
         this.role_id = newRoleId;
     }
     public void setDirect_referral(Long direct_referral) { this.direct_referral = direct_referral; }
+    public void setCashOut(boolean cash_out) { this.cash_out = cash_out; }
 }

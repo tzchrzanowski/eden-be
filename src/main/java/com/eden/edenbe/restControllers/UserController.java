@@ -184,6 +184,7 @@ public class UserController {
             MoneyCalc calculations = new MoneyCalc();
             newUser.setPackageType(newUserPayload.get("package"));
             newUser.setMoney_amount(new BigDecimal(0));
+            newUser.setCashOut(false);
             newUser.setPoints(calculations.getInitialPointsForPackage(newUser.getPackageType()));
             newUser.setMonthly_points(0);
 

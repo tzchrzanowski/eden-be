@@ -70,6 +70,7 @@ public class UserService {
         userDTO.setMoney_amount(user.getMoney_amount());
         userDTO.setRole_id(user.getRole_id());
         userDTO.setDirect_referral(user.getDirect_referral());
+        userDTO.setCashOut(user.getCashOut());
         return userDTO;
     }
 
