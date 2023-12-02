@@ -16,7 +16,10 @@ public class MoneyCalc {
     private Integer gold_package_points = 120;
     private Integer diamond_package_points = 360;
 
-    public BigDecimal calculatePackage(String package_type) {
+    /*
+    *
+    * */
+    public BigDecimal costOfPackage(String package_type) {
         switch (package_type) {
             case "Silver":
                 return this.silver_money_amount;

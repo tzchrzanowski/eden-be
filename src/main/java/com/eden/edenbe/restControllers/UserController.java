@@ -179,10 +179,11 @@ public class UserController {
             /*
              * Set package, money and points for new user
              * Initial monthly points are always 0
-             * */
+             * initial money on every new account is 0
+             */
             MoneyCalc calculations = new MoneyCalc();
             newUser.setPackageType(newUserPayload.get("package"));
-            newUser.setMoney_amount(calculations.calculatePackage(newUser.getPackageType()));
+            newUser.setMoney_amount(new BigDecimal(0));
             newUser.setPoints(calculations.getInitialPointsForPackage(newUser.getPackageType()));
             newUser.setMonthly_points(0);
 
