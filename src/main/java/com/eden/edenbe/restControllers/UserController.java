@@ -118,6 +118,33 @@ public class UserController {
     };
 
     /*
+     * Set cash_out parameter value for user account along with reducing the amount of money that user has:
+     * User is cashed out so cash_out parameter can be directly set to false.
+     * */
+    @PatchMapping("/{userId}/set_cash_out_amount")
+    public ResponseEntity<String> setCashOutAmountForUser(
+            @PathVariable Long userId,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+            @RequestBody  Map<String, BigDecimal> cashOutAmountPayload
+    ) {
+        if (JwtUtils.validateToken(token) != null) {
+            User user = userService.getUserById(userId);
+            if (user != null) {
+                BigDecimal cash_out_amount_value = cashOutAmountPayload.get("cash_out_amount");
+                BigDecimal current_money = user.getMoney_amount();
+                BigDecimal remaining_money = current_money.subtract(cash_out_amount_value);
+                user.setMoney_amount(remaining_money);
+                user.setCashOut(false);
+                userService.updateUserProfile(user);
+                return ResponseEntity.ok("200");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        }
+        return ResponseEntity.badRequest().build();
+    };
+
+    /*
      * Add points to user account:
      * payload has: username
      * Monthly points will go all the way to 0 regardless how many there are. all monthly points will be assigned to user points
