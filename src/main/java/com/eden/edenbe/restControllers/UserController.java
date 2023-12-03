@@ -71,7 +71,6 @@ public class UserController {
 
     /*
     * Add points to user account:
-    *
     * */
     @PatchMapping("/{userId}/add-points")
     public ResponseEntity<String> addPointsToUser(
@@ -86,6 +85,29 @@ public class UserController {
                 Integer currentMonthlyPoints = user.getMonthly_points();
                 Integer sumPoints = currentMonthlyPoints + pointsToAdd;
                 user.setMonthly_points(sumPoints);
+                userService.updateUserProfile(user);
+                return ResponseEntity.ok("200");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        }
+        return ResponseEntity.badRequest().build();
+    };
+
+    /*
+     * Set cash_out parameter value for user account:
+     * */
+    @PatchMapping("/{userId}/set_cash_out")
+    public ResponseEntity<String> setCashOutForUser(
+            @PathVariable Long userId,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+            @RequestBody  Map<String, Boolean> cashOutPayload
+    ) {
+        if (JwtUtils.validateToken(token) != null) {
+            User user = userService.getUserById(userId);
+            if (user != null) {
+                boolean new_cash_out_value = cashOutPayload.get("cash_out");
+                user.setCashOut(new_cash_out_value);
                 userService.updateUserProfile(user);
                 return ResponseEntity.ok("200");
             } else {
