@@ -43,11 +43,27 @@ public class UserService {
         return userDTOs;
     }
 
+    public List<UserDTO> getAllCashOutUsersDTO() {
+        List<User> users = userRepository.findAll();
+        List<UserDTO> cashOutUsersDTOs = users.stream()
+                .filter(user -> doesUserWantToCashOut(user))
+                .map(user -> mapToUserDTO(user))
+                .collect(Collectors.toList());
+        return cashOutUsersDTOs;
+    }
+
     /*
     * Checks if user is an accountant:
     * */
     private boolean isUserAnAccountant(User user) {
         return user.getRole_id() == 3;
+    }
+
+    /*
+     * Checks if user wants to cash out
+     * */
+    private boolean doesUserWantToCashOut(User user) {
+        return user.getCashOut() == true;
     }
 
     /*

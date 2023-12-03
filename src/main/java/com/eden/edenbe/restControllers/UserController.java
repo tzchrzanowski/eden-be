@@ -39,6 +39,16 @@ public class UserController {
         return null;
     }
 
+    @GetMapping("/get-all-cash-out-users")
+    public List<UserDTO> getAllCashOutUsers(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token
+    ) {
+        if (JwtUtils.validateToken(token) != null) {
+            return userService.getAllCashOutUsersDTO();
+        }
+        return null;
+    }
+
     @PatchMapping("/{userId}/update-profile-picture")
     public ResponseEntity<User> updateProfilePicture(
             @PathVariable Long userId,

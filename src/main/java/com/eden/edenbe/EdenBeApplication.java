@@ -40,18 +40,26 @@ public class EdenBeApplication {
         /*
         * Print user information to the console
         * */
+        String usersStr =  "All users from database: ";
+        int printCount = 0;
         for (User user : users) {
-            if(userService.isPasswordValid("placePassword",user.getPassword())) {
-                System.out.println("provided password is correct!");
-            } else {
-                System.out.println("Incorrect password.");
+            usersStr += user.getUsername();
+            usersStr += "|" + user.getEmail() + ", ";
+            printCount ++;
+            if (printCount == 5) {
+                printCount = 0;
+                usersStr += "\n";
             }
-            System.out.println("Username: " + user.getUsername());
-            System.out.println("Email: " + user.getEmail());
-            System.out.println();
+            /*
+            * quick check for password for user. Useless now but might come useful at some point.
+            * */
+//            if(userService.isPasswordValid("placePassword",user.getPassword())) {
+//                System.out.println("provided password is correct!");
+//            } else {
+//                System.out.println("Incorrect password.");
+//            }
         }
-
-
+        System.out.println("\n" + usersStr + "\n");
     }
 
 }
