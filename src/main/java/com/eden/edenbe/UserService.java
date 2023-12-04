@@ -43,6 +43,14 @@ public class UserService {
         return userDTOs;
     }
 
+    /*
+    * Returns single user DTO
+    * */
+    public UserDTO getUserDTO(User user) {
+        UserDTO userDTO = mapToUserDTO(user);
+        return userDTO;
+    }
+
     public List<UserDTO> getAllCashOutUsersDTO() {
         List<User> users = userRepository.findAll();
         List<UserDTO> cashOutUsersDTOs = users.stream()

@@ -29,6 +29,24 @@ public class UserController {
 //        this.auth = authentication;
 //    }
 
+    /*
+     * Set cash_out parameter value for user account:
+     * */
+    @GetMapping("/{userId}/get_user_details")
+    public UserDTO setCashOutForUser(
+            @PathVariable Long userId,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token
+    ) {
+        if (JwtUtils.validateToken(token) != null) {
+            User user = userService.getUserById(userId);
+            UserDTO userDTO = userService.getUserDTO(user);
+            if (userDTO != null) {
+                return userDTO;
+            }
+        }
+        return null;
+    };
+
     @GetMapping("/get-all-users")
     public List<UserDTO> getAllUsers(
             @RequestHeader(HttpHeaders.AUTHORIZATION) String token
@@ -116,6 +134,7 @@ public class UserController {
         }
         return ResponseEntity.badRequest().build();
     };
+
 
     /*
      * Set cash_out parameter value for user account along with reducing the amount of money that user has:
