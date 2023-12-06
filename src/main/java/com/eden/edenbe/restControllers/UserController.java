@@ -33,7 +33,7 @@ public class UserController {
      * Set cash_out parameter value for user account:
      * */
     @GetMapping("/{userId}/get_user_details")
-    public UserDTO setCashOutForUser(
+    public UserDTO getUserDetails(
             @PathVariable Long userId,
             @RequestHeader(HttpHeaders.AUTHORIZATION) String token
     ) {
@@ -113,18 +113,19 @@ public class UserController {
     };
 
     /*
-     * Set cash_out parameter value for user account:
+     * Set cash_out parameter value for to false on user account:
+     * User by user to cancel his cash-out request
      * */
-    @PatchMapping("/{userId}/set_cash_out")
+    @PatchMapping("/{userId}/set_cash_out_bool")
     public ResponseEntity<String> setCashOutForUser(
             @PathVariable Long userId,
             @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
-            @RequestBody  Map<String, Boolean> cashOutPayload
+            @RequestBody  Map<String, Boolean> cashOutBoolPayload
     ) {
         if (JwtUtils.validateToken(token) != null) {
             User user = userService.getUserById(userId);
             if (user != null) {
-                boolean new_cash_out_value = cashOutPayload.get("cash_out");
+                boolean new_cash_out_value = cashOutBoolPayload.get("cash_out_bool");
                 user.setCashOut(new_cash_out_value);
                 userService.updateUserProfile(user);
                 return ResponseEntity.ok("200");
@@ -135,6 +136,30 @@ public class UserController {
         return ResponseEntity.badRequest().build();
     };
 
+    /*
+     * Set cash_out parameter value for to false on user account:
+     * User by user to cancel his cash-out request
+     * */
+    @PatchMapping("/{userId}/set_cash_out_by_user")
+    public ResponseEntity<String> setCashOutByUser(
+            @PathVariable Long userId,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+            @RequestBody  Map<String, String> cashOutByUserPayload
+    ) {
+        if (JwtUtils.validateToken(token) != null) {
+            User user = userService.getUserById(userId);
+            if (user != null) {
+                String new_cash_out_details = cashOutByUserPayload.get("cash_out_details");
+                user.setCash_out_details(new_cash_out_details);
+                user.setCashOut(true);
+                userService.updateUserProfile(user);
+                return ResponseEntity.ok("200");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        }
+        return ResponseEntity.badRequest().build();
+    };
 
     /*
      * Set cash_out parameter value for user account along with reducing the amount of money that user has:
@@ -263,6 +288,7 @@ public class UserController {
             newUser.setPackageType(newUserPayload.get("package"));
             newUser.setMoney_amount(new BigDecimal(0));
             newUser.setCashOut(false);
+            newUser.setCash_out_details("");
             newUser.setPoints(calculations.getInitialPointsForPackage(newUser.getPackageType()));
             newUser.setMonthly_points(0);
 

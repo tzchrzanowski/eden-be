@@ -20,6 +20,7 @@ public class UserDTO {
     private int role_id;
     private Long direct_referral;
     private boolean cash_out;
+    private String cash_out_details;
 
     /*
      * Getters
@@ -52,6 +53,7 @@ public class UserDTO {
     }
     public Long getDirect_referral() { return this.direct_referral; }
     public boolean getCashOut() { return this.cash_out; }
+    public String getCash_out_details() { return this.cash_out_details; }
 
     /*
     * Setters:
@@ -90,4 +92,5 @@ public class UserDTO {
     }
     public void setDirect_referral(Long direct_referral) { this.direct_referral = direct_referral; }
     public void setCashOut(boolean cash_out) { this.cash_out = cash_out; }
+    public void setCash_out_details(String cash_out_details) { this.cash_out_details = cash_out_details; }
 }

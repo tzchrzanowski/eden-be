@@ -95,6 +95,7 @@ public class UserService {
         userDTO.setRole_id(user.getRole_id());
         userDTO.setDirect_referral(user.getDirect_referral());
         userDTO.setCashOut(user.getCashOut());
+        userDTO.setCash_out_details(user.getCash_out_details());
         return userDTO;
     }
 

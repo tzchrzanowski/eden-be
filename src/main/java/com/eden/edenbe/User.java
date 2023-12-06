@@ -30,7 +30,7 @@ public class User {
     private BigDecimal money_amount;
     private Long direct_referral;
     private boolean cash_out;
-
+    private String cash_out_details;
     public User() {
     }
     /*
@@ -54,7 +54,8 @@ public class User {
         String package_type,
         BigDecimal new_money_amount,
         Long direct_referral,
-        boolean cash_out
+        boolean cash_out,
+        String cash_out_details
     ) {
         this.id = id;
         this.username = username;
@@ -74,6 +75,7 @@ public class User {
         this.money_amount = new_money_amount.setScale(2, RoundingMode.HALF_UP);
         this.direct_referral = direct_referral;
         this.cash_out = cash_out;
+        this.cash_out_details = cash_out_details;
     }
 
     /*
@@ -141,6 +143,7 @@ public class User {
     public BigDecimal getMoney_amount() { return this.money_amount; }
     public Long getDirect_referral() { return this.direct_referral; }
     public boolean getCashOut() { return this.cash_out; }
+    public String getCash_out_details() { return this.cash_out_details; }
 
     /*
     * Setters:
@@ -191,4 +194,5 @@ public class User {
     public void setMoney_amount(BigDecimal new_money_amount) { this.money_amount = new_money_amount.setScale(2, RoundingMode.HALF_UP); }
     public void setDirect_referral(Long direct_referral) { this.direct_referral = direct_referral; }
     public void setCashOut(boolean cash_out) { this.cash_out = cash_out; }
+    public void setCash_out_details(String cash_out_details) { this.cash_out_details = cash_out_details; }
 }
