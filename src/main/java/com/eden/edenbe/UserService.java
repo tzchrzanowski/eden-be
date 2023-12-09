@@ -44,6 +44,18 @@ public class UserService {
     }
 
     /*
+    * get all users that are directly referred by given user as their parent
+    * */
+    public List<UserDTO> getUsersDTOByDirectReferral(Long direct_referral) {
+        List<User> referredUsers = getUsersByDirectReferral(direct_referral);
+        List<UserDTO> referredUsersDTOs = referredUsers.stream()
+                .map(referredUser -> mapToUserDTO(referredUser))
+                .collect(Collectors.toList());
+
+        return referredUsersDTOs;
+    };
+
+    /*
     * Returns single user DTO
     * */
     public UserDTO getUserDTO(User user) {
@@ -51,6 +63,9 @@ public class UserService {
         return userDTO;
     }
 
+    /*
+    * returns all cash-out users as userDTO
+    * */
     public List<UserDTO> getAllCashOutUsersDTO() {
         List<User> users = userRepository.findAll();
         List<UserDTO> cashOutUsersDTOs = users.stream()
@@ -139,6 +154,13 @@ public class UserService {
     * */
     public List<User> getUsersByParent(int parent) {
         return userRepository.findByParent(parent);
+    }
+
+    /*
+    * Get users by user that directly referred them into network:
+    */
+    public List<User> getUsersByDirectReferral(Long direct_referral) {
+        return userRepository.findByDirectReferral(direct_referral);
     }
 
     /*

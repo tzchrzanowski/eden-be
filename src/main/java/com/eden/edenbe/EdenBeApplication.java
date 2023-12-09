@@ -60,6 +60,20 @@ public class EdenBeApplication {
 //            }
         }
         System.out.println("\n" + usersStr + "\n");
-    }
+        /*-------------------------------------------------------*/
 
+
+        /*
+        * checking if getting all referred users works properly:
+        * */
+        long userId = 2;
+        List<UserDTO> referredUsers = userService.getUsersDTOByDirectReferral(userId);
+        String referredUsersStr =  "Referred users by: " + userId + " id : " ;
+        for (UserDTO refUser : referredUsers) {
+            referredUsersStr += refUser.getId();
+            referredUsersStr += ", ";
+        }
+        System.out.println("\n" + referredUsersStr + "\n");
+        /*-------------------------------------------------------*/
+    }
 }
