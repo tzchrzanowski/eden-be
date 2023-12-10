@@ -195,4 +195,13 @@ public class User {
     public void setDirect_referral(Long direct_referral) { this.direct_referral = direct_referral; }
     public void setCashOut(boolean cash_out) { this.cash_out = cash_out; }
     public void setCash_out_details(String cash_out_details) { this.cash_out_details = cash_out_details; }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        User user = (User) obj;
+        return id.equals(user.id);
+    }
+
 }

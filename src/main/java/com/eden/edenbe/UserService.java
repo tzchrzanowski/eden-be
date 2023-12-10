@@ -2,8 +2,8 @@ package com.eden.edenbe;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -54,6 +54,38 @@ public class UserService {
 
         return referredUsersDTOs;
     };
+
+    /*
+     * Get pairs for referral:
+     * */
+    public List<User> getPairsOfDirectReferral(List<User> referrals) {
+        Set<Long> pairsLongIdsSet = new HashSet<>();
+        for (User user : referrals) {
+            Long parentIdOfCurrentUser = Long.valueOf(user.getParent());
+            User parent = getUserById(parentIdOfCurrentUser);
+            if (parent.getLeft_child() > -1) {
+                Long leftChildId = parent.getLeft_child();
+                User leftChild = getUserById(leftChildId);
+                if (parent.getRight_child() > -1) {
+                    Long rightChildId = parent.getRight_child();
+                    User rightChild = getUserById(rightChildId);
+                    if (leftChild.getDirect_referral() == rightChild.getDirect_referral()) {
+                        if (!pairsLongIdsSet.contains(leftChild.getId())) {
+                            pairsLongIdsSet.add(leftChild.getId());
+                        }
+                        if (!pairsLongIdsSet.contains(rightChild.getId())) {
+                            pairsLongIdsSet.add(rightChild.getId());
+                        }
+                    }
+                }
+            }
+        }
+        List<User> pairsList = new ArrayList<User>();
+        for (Long element : pairsLongIdsSet) {
+            pairsList.add(getUserById(element));
+        }
+        return pairsList;
+    }
 
     /*
     * Returns single user DTO
