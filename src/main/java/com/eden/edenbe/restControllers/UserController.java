@@ -356,6 +356,11 @@ public class UserController {
                     return ResponseEntity.notFound().build();
                 }
                 //--------------------------------------------------------------------------------------
+                /*
+                * Check for perfect pair creation for referral bonus:
+                * */
+                checkForPerfectPair(parentUser.getId(), direct_referral_id);
+                //--------------------------------------------------------------------------------------
 
                 return ResponseEntity.ok("User" + createdUser.get().getUsername() + " created");
             } else {
@@ -380,6 +385,45 @@ public class UserController {
         return new TreeNode();
     }
 
+
+    /*
+    * After new user is created and direct-parent updated with new user child node,
+    * then it can be checked if newly added user created a perfect-referral-pair
+    *
+    * Set money bonus to direct-referral-parent for creating perfect-pair:
+    * */
+    private void checkForPerfectPair(Long parentUserId, Long directReferralId) {
+        User parentUser = userService.getUserById(parentUserId);
+        User parentLeftChild = userService.getUserById(parentUser.getLeft_child());
+        User parentRightChild = userService.getUserById(parentUser.getRight_child());
+        if (parentLeftChild.getDirect_referral() == parentRightChild.getDirect_referral()) {
+            /*
+             * if both parent children hase same referral, then reduce their 40 points
+             * */
+            if (parentLeftChild.getPoints() >= 40 && parentRightChild.getPoints() >= 40) {
+                int leftChildNewTotalPoints = parentLeftChild.getPoints() - 40;
+                int rightChildNewTotalPoints = parentRightChild.getPoints() - 40;
+                parentLeftChild.setPoints(leftChildNewTotalPoints);
+                parentRightChild.setPoints(rightChildNewTotalPoints);
+                userService.updateUserProfile(parentLeftChild);
+                userService.updateUserProfile(parentRightChild);
+
+                /*
+                *  add extra 200 php to referral-parent-user for creating perfect-pair of referral
+                * */
+                User referralParent = userService.getUserById(directReferralId);
+                BigDecimal referralParentMoney = referralParent.getMoney_amount();
+                BigDecimal moneyToAddForPerfectPairReferral = new BigDecimal(200);
+                BigDecimal referralParentMoneySum = referralParentMoney.add(moneyToAddForPerfectPairReferral) ;
+                referralParent.setMoney_amount(referralParentMoneySum);
+                userService.updateUserProfile(referralParent);
+            }
+        }
+
+        /*
+         * Update changes to direct-referral-parent user after completed previous two checks:
+         * */
+    }
 
     /*
     * Recursively builds binary-tree structure based on given parent user id:

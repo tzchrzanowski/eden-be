@@ -58,7 +58,7 @@ public class UserService {
     /*
      * Get pairs for referral:
      * */
-    public List<User> getPairsOfDirectReferral(List<User> referrals) {
+    public List<User> getPerfectPairsOfDirectReferral(List<User> referrals) {
         Set<Long> pairsLongIdsSet = new HashSet<>();
         for (User user : referrals) {
             Long parentIdOfCurrentUser = Long.valueOf(user.getParent());
