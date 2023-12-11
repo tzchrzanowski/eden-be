@@ -413,7 +413,7 @@ public class UserController {
                 * */
                 User referralParent = userService.getUserById(directReferralId);
                 BigDecimal referralParentMoney = referralParent.getMoney_amount();
-                BigDecimal moneyToAddForPerfectPairReferral = new BigDecimal(200);
+                BigDecimal moneyToAddForPerfectPairReferral = new BigDecimal(800); // 800 php for pair-match-referral bonus
                 BigDecimal referralParentMoneySum = referralParentMoney.add(moneyToAddForPerfectPairReferral) ;
                 referralParent.setMoney_amount(referralParentMoneySum);
                 userService.updateUserProfile(referralParent);
