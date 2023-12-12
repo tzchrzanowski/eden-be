@@ -291,6 +291,7 @@ public class UserController {
             newUser.setCash_out_details("");
             newUser.setPoints(calculations.getInitialPointsForPackage(newUser.getPackageType()));
             newUser.setMonthly_points(0);
+            newUser.setPairs_amount(0);
 
             /*
             * Get direct referral user id:

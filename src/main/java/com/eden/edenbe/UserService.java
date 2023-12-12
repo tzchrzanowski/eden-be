@@ -143,6 +143,7 @@ public class UserService {
         userDTO.setDirect_referral(user.getDirect_referral());
         userDTO.setCashOut(user.getCashOut());
         userDTO.setCash_out_details(user.getCash_out_details());
+        userDTO.setPairs_amount(user.getPairs_amount());
         return userDTO;
     }
 
