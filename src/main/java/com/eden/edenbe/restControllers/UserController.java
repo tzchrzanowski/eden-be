@@ -417,6 +417,14 @@ public class UserController {
                 BigDecimal moneyToAddForPerfectPairReferral = new BigDecimal(800); // 800 php for pair-match-referral bonus
                 BigDecimal referralParentMoneySum = referralParentMoney.add(moneyToAddForPerfectPairReferral) ;
                 referralParent.setMoney_amount(referralParentMoneySum);
+
+                /*
+                * increase amount of pairs created by parent:
+                * */
+                int currentPairsOfReferralParent = referralParent.getPairs_amount();
+                currentPairsOfReferralParent += 1;
+                referralParent.setPairs_amount(currentPairsOfReferralParent);
+
                 userService.updateUserProfile(referralParent);
             }
         }
