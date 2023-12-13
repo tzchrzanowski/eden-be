@@ -423,10 +423,19 @@ public class UserController {
                 * increase amount of pairs created by parent:
                 * */
                 int currentPairsOfReferralParent = referralParent.getPairs_amount();
-                currentPairsOfReferralParent += 1;
-                referralParent.setPairs_amount(currentPairsOfReferralParent);
-
+                int newPairsAmount = currentPairsOfReferralParent + 1;
+                referralParent.setPairs_amount(newPairsAmount);
                 userService.updateUserProfile(referralParent);
+
+                /*
+                * increase the gift certificates amount if just created pair was the 5th in order.
+                * */
+                if (newPairsAmount % 5 == 0) {
+                    int referralParentGiftCertsAmount = referralParent.getGift_certificates_amount();
+                    int newGiftCertAmount = referralParentGiftCertsAmount + 1;
+                    referralParent.setGift_certificates_amount(newGiftCertAmount);
+                    userService.updateUserProfile(referralParent);
+                }
             }
         }
 
