@@ -32,6 +32,7 @@ public class User {
     private boolean cash_out;
     private String cash_out_details;
     private Integer pairs_amount;
+    private Integer gift_certificates_amount;
 
     public User() {
     }
@@ -58,7 +59,8 @@ public class User {
         Long direct_referral,
         boolean cash_out,
         String cash_out_details,
-        int pairs_amount
+        int pairs_amount,
+        int gift_certificates_amount
     ) {
         this.id = id;
         this.username = username;
@@ -80,6 +82,7 @@ public class User {
         this.cash_out = cash_out;
         this.cash_out_details = cash_out_details;
         this.pairs_amount = pairs_amount;
+        this.gift_certificates_amount = gift_certificates_amount;
     }
 
     /*
@@ -149,6 +152,7 @@ public class User {
     public boolean getCashOut() { return this.cash_out; }
     public String getCash_out_details() { return this.cash_out_details; }
     public Integer getPairs_amount() { return this.pairs_amount; }
+    public Integer getGift_certificates_amount() { return this.gift_certificates_amount; }
 
     /*
     * Setters:
@@ -201,6 +205,7 @@ public class User {
     public void setCashOut(boolean cash_out) { this.cash_out = cash_out; }
     public void setCash_out_details(String cash_out_details) { this.cash_out_details = cash_out_details; }
     public void setPairs_amount(Integer pairs_amount) { this.pairs_amount = pairs_amount; }
+    public void setGift_certificates_amount(Integer gift_certificates_amount) { this.gift_certificates_amount = gift_certificates_amount; }
 
     @Override
     public boolean equals(Object obj) {

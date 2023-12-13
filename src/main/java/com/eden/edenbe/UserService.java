@@ -144,6 +144,7 @@ public class UserService {
         userDTO.setCashOut(user.getCashOut());
         userDTO.setCash_out_details(user.getCash_out_details());
         userDTO.setPairs_amount(user.getPairs_amount());
+        userDTO.setGift_certificates_amount(user.getGift_certificates_amount());
         return userDTO;
     }
 
