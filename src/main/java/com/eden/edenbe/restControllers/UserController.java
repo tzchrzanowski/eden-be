@@ -201,10 +201,14 @@ public class UserController {
         if (JwtUtils.validateToken(token) != null) {
             Optional<User> user = userService.getUserByUsername(addMonthlyPointsPayload.get("username"));
             if (user != null) {
-                Integer monthlyPointsToAdd = user.get().getMonthly_points();
-                Integer currentUserPoints = user.get().getPoints();
-                Integer sumPoints = currentUserPoints + monthlyPointsToAdd;
-                user.get().setPoints(sumPoints);
+                 /*
+                 * TODO: commented code below adds monthly points to sum of all user's points.
+                 *  This functionality was changed from initial description so was removed.
+                 * */
+//                Integer monthlyPointsToAdd = user.get().getMonthly_points();
+//                Integer currentUserPoints = user.get().getPoints();
+//                Integer sumPoints = currentUserPoints + monthlyPointsToAdd;
+//                user.get().setPoints(sumPoints);
                 user.get().setMonthly_points(0);
                 userService.updateUserProfile(user.get());
                 return ResponseEntity.ok("200");
@@ -230,8 +234,12 @@ public class UserController {
 
             if (users != null) {
                 for (User user : users) {
-                    Integer sum = user.getPoints() + user.getMonthly_points();
-                    user.setPoints(sum);
+                    /*
+                    * TODO: commented code below adds monthly points to sum of all user's points.
+                    *  This functionality was changed from initial description so was removed.
+                    * */
+//                    Integer sum = user.getPoints() + user.getMonthly_points();
+//                    user.setPoints(sum);
                     user.setMonthly_points(0);
                     userService.updateUserProfile(user);
                 }
