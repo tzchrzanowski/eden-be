@@ -388,7 +388,7 @@ public class UserController {
         String username = JwtUtils.validateToken(token);
         if(username != null) {
             if(parent > 0) {
-                TreeNode userTree = buildUserTree(parent);
+                TreeNode userTree = buildUserTree(parent, 4);
                 return userTree;
             }
         }
@@ -455,7 +455,8 @@ public class UserController {
     /*
     * Recursively builds binary-tree structure based on given parent user id:
     * */
-    private TreeNode buildUserTree(int parent) {
+    private TreeNode buildUserTree(int parent, int treeDepth) {
+        int newTreeDepth = treeDepth-1;
         List<User> users = userService.getUsersByParent(parent);
 
         Long userIdAsLong = Long.valueOf(parent);
@@ -486,19 +487,23 @@ public class UserController {
         node.setUser(userDTO);
 
         TreeNode leftChild = null;
-        if (currentUser.getLeft_child() > 0) {
-            for (User user : users) {
-                if (user.getId() == currentUser.getLeft_child()) {
-                    leftChild = buildUserTree(currentUser.getLeft_child().intValue());
+        TreeNode rightChild = null;
+        /*
+        * display only 4 levels in tree ( frontend view looks properly only with 4 at the time )
+        * */
+        if (newTreeDepth > 0) {
+            if (currentUser.getLeft_child() > 0) {
+                for (User user : users) {
+                    if (user.getId() == currentUser.getLeft_child()) {
+                        leftChild = buildUserTree(currentUser.getLeft_child().intValue(), newTreeDepth);
+                    }
                 }
             }
-        }
-
-        TreeNode rightChild = null;
-        if (currentUser.getRight_child() > 0) {
-            for (User user : users) {
-                if (user.getId() == currentUser.getRight_child()) {
-                    rightChild = buildUserTree(currentUser.getRight_child().intValue());
+            if (currentUser.getRight_child() > 0) {
+                for (User user : users) {
+                    if (user.getId() == currentUser.getRight_child()) {
+                        rightChild = buildUserTree(currentUser.getRight_child().intValue(), newTreeDepth);
+                    }
                 }
             }
         }
