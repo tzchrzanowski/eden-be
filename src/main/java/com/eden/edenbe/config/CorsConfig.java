@@ -22,7 +22,6 @@ public class CorsConfig implements WebMvcConfigurer {
     /*
     * test different origins:
     * */
-//                .allowedOrigins("*")
 
 
 //    @Bean

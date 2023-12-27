@@ -30,7 +30,7 @@ public class Authentication {
 
         try {
             Connection connection = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
-            String query = "SELECT * FROM Users WHERE username = ?";
+            String query = "SELECT * FROM users WHERE username = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, username);
 
