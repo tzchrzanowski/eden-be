@@ -18,7 +18,7 @@ import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import static com.eden.edenbe.config.JwtUtils.generateToken;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "http://13.212.101.199:80"})
 @RestController
 @RequestMapping("/api/public")
 public class LoginController {
