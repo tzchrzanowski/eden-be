@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-@CrossOrigin(origins = {"http://localhost:3000", "http://13.212.101.199:80"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://13.212.101.199:80", "http://13.212.101.199"})
 @RestController
 @RequestMapping("/api/public/users")
 public class UserController {
